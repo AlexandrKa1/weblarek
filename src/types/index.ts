@@ -15,9 +15,9 @@ export interface IProduct {
 
 export interface ICustomer {
     payment: 'card' | 'cash' | ''
-    address: string | null
-    email: string | null
-    phone: string | null
+    address: string
+    email: string
+    phone: string
 }
 
 export type TGetProducts = {

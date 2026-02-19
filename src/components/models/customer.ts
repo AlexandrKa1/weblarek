@@ -1,10 +1,10 @@
 import { ICustomer } from "../../types";
 
 export class Customer {
-  private payment: ICustomer["payment"] = "";
-  private address: string | null = null;
-  private email: string | null = null;
-  private phone: string | null = null;
+  private payment: ICustomer["payment"] | "" = "";
+  private address: string = "";
+  private email: string = "";
+  private phone: string = "";
 
   constructor() {}
 
@@ -12,21 +12,21 @@ export class Customer {
     this.payment = payment;
   }
 
-  setAddress(address: string | null): void {
+  setAddress(address: string): void {
     this.address = address;
   }
 
-  setEmail(email: string | null): void {
+  setEmail(email: string): void {
     this.email = email;
   }
 
-  setPhone(phone: string | null): void {
+  setPhone(phone: string): void {
     this.phone = phone;
   }
 
   getData(): ICustomer {
     return {
-      payment: this.payment,
+      payment: this.payment as ICustomer["payment"],
       address: this.address,
       email: this.email,
       phone: this.phone,
@@ -35,32 +35,27 @@ export class Customer {
 
   clear(): void {
     this.payment = "";
-    this.address = null;
-    this.email = null;
-    this.phone = null;
+    this.address = "";
+    this.email = "";
+    this.phone = "";
   }
 
   validation(): CustomerErrors {
-    const customerErrors: CustomerErrors = {};
-    if (this.payment === "") {
-      customerErrors.payment = "Не выбран вид оплаты";
+    const errors: CustomerErrors = {};
+    if (!this.payment) {
+      errors.payment = 'Необходимо выбрать способ оплаты';
     }
-    if (this.address === null || this.address.trim() === "") {
-      customerErrors.address = "Введите адрес доставки";
+    if (!this.email.trim()) {
+      errors.email = 'Необходимо указать email';
     }
-    if (this.email === null || this.email.trim() === "") {
-      customerErrors.email = "Укажите email";
+    if (!this.phone.trim()) {
+      errors.phone = 'Необходимо указать телефон';
     }
-    if (this.phone === null || this.phone.trim() === "") {
-      customerErrors.phone = "Укажите телефон";
+    if (!this.address.trim()) {
+      errors.address = 'Необходимо указать адрес';
     }
-    return customerErrors;
+    return errors;
   }
 }
 
-type CustomerErrors = {
-  payment?: string;
-  address?: string;
-  email?: string;
-  phone?: string;
-};
+type CustomerErrors = Partial<Record<keyof ICustomer, string>>;
