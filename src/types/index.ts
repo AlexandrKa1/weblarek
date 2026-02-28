@@ -15,9 +15,9 @@ export interface IProduct {
 
 export interface ICustomer {
     payment: 'card' | 'cash' | ''
-    address: string
-    email: string
-    phone: string
+    address: string | null
+    email: string | null
+    phone: string | null
 }
 
 export type TGetProducts = {
@@ -31,11 +31,25 @@ export type TPostCustomer = {
     error?: string;
 }
 
-export type TCustomer = {
+export type TCustomerApi = {
     email: string;
     address: string;
     phone: string;
     payment: string;
     items: string[];
     total: number;
+}
+
+export interface IActions {
+  onClick?: () => void;
+}
+
+export interface IOrderActions {
+  onChooseCard?: () => void;
+  onChooseCash?: () => void;
+  onAddressInput?: (value: string) => void;
+  onClickFurther?: () => void;
+  onEmailInput?: (value: string) => void;
+  onPhoneInput?: (value: string) => void;
+  onClickPay?: () => void;
 }

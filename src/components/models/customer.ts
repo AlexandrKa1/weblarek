@@ -1,32 +1,37 @@
 import { ICustomer } from "../../types";
+import { IEvents } from "../base/Events";
 
 export class Customer {
-  private payment: ICustomer["payment"] | "" = "";
+  private payment: ICustomer["payment"] = "";
   private address: string = "";
   private email: string = "";
   private phone: string = "";
 
-  constructor() {}
+  constructor(private events: IEvents) {}
 
   setPayment(payment: ICustomer["payment"]): void {
     this.payment = payment;
+    this.events.emit('customer:changed');
   }
 
   setAddress(address: string): void {
     this.address = address;
+    this.events.emit('customer:changed');
   }
 
   setEmail(email: string): void {
     this.email = email;
+    this.events.emit('customer:changed');
   }
 
   setPhone(phone: string): void {
     this.phone = phone;
+    this.events.emit('customer:changed');
   }
 
   getData(): ICustomer {
     return {
-      payment: this.payment as ICustomer["payment"],
+      payment: this.payment,
       address: this.address,
       email: this.email,
       phone: this.phone,
@@ -41,21 +46,21 @@ export class Customer {
   }
 
   validation(): CustomerErrors {
-    const errors: CustomerErrors = {};
-    if (!this.payment) {
-      errors.payment = 'Необходимо выбрать способ оплаты';
+    const customerErrors: CustomerErrors = {};
+    if (this.payment === "") {
+      customerErrors.payment = "Не выбран вид оплаты";
     }
-    if (!this.email.trim()) {
-      errors.email = 'Необходимо указать email';
+    if (this.address === null || this.address.trim() === "") {
+      customerErrors.address = "Введите адрес доставки";
     }
-    if (!this.phone.trim()) {
-      errors.phone = 'Необходимо указать телефон';
+    if (this.email === null || this.email.trim() === "") {
+      customerErrors.email = "Укажите email";
     }
-    if (!this.address.trim()) {
-      errors.address = 'Необходимо указать адрес';
+    if (this.phone === null || this.phone.trim() === "") {
+      customerErrors.phone = "Укажите телефон";
     }
-    return errors;
+    return customerErrors;
   }
 }
 
-type CustomerErrors = Partial<Record<keyof ICustomer, string>>;
+export type CustomerErrors = Partial<Record<keyof ICustomer, string>>;

@@ -1,4 +1,4 @@
-import { IApi, TCustomer, TGetProducts, TPostCustomer } from "../../types";
+import { IApi, TCustomerApi, TGetProducts, TPostCustomer } from "../../types";
 
 export class WebLarekApi {
   private api: IApi;
@@ -11,7 +11,7 @@ export class WebLarekApi {
     return this.api.get("/product/");
   }
 
-  postCustomer(data: TCustomer): Promise<TPostCustomer> {
+  postCustomer(data: TCustomerApi): Promise<TPostCustomer> {
     return this.api.post("/order/", data);
   }
 }

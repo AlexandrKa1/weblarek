@@ -136,3 +136,13 @@ export function createElement<
     }
     return element;
 }
+
+export function formatSynapses(price: number | null): string {
+  if (price === null) return 'Бесценно';
+
+  //до 100000 — без пробелов
+  if (price < 100000) return `${price} синапсов`;
+
+  // от 100000 и выше — пробелы по тысячам
+  return `${price.toLocaleString('ru-RU')} синапсов`; // 100000 -> "100 000" (неразрывный пробел)
+}
