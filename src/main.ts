@@ -25,6 +25,7 @@ import { IApi, IProduct, TPostCustomer } from "./types";
 import { API_URL } from "./utils/constants";
 import { cloneTemplate, ensureElement } from "./utils/utils";
 import { TCustomerApi } from "./types";
+import { CDN_URL } from "./utils/constants";
 
 const API_ORIGIN: string = API_URL;
 const apiClient: IApi = new Api(API_ORIGIN);
@@ -193,7 +194,14 @@ events.on("catalog:changed", () => {
 
 try {
   const products = await webLarekApi.getProducts();
-  catalogModel.setProducts(products.items);
+  
+  // Добавляем CDN_URL к каждому изображению
+  const productsWithImages = products.items.map((product) => ({
+    ...product,
+    image: product.image ? `${CDN_URL}${product.image}` : './src/images/Subtract.svg',
+  }));
+  
+  catalogModel.setProducts(productsWithImages);
 } catch (error) {
   console.log(error);
 }
